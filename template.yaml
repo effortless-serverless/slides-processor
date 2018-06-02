@@ -18,6 +18,8 @@ Resources:
       Policies:
         - SNSCrudPolicy:
             TopicName: !GetAtt SlideConvertTopic.TopicName
+        - S3ReadPolicy:
+            BucketName: !Ref PdfSlidesS3
       Events:
         PdfFileAddedEvent:
           Type: S3
@@ -40,6 +42,8 @@ Resources:
       Policies:
         - S3CrudPolicy:
             BucketName: !Ref ImageSlidesS3
+        - S3ReadPolicy:
+            BucketName: !Ref PdfSlidesS3
       Events:
         SubscribedTopic:
           Type: SNS
