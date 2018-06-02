@@ -17,7 +17,7 @@ function runCommand(command) {
   })
 } 
 
-module.exports = async function countSlides(s3Object, downloadFromS3, s3, saveToTmp = saveToTmpFunction, run = runCommand) {
+module.exports = async function countSlides(s3Object, downloadFromS3, sns, saveToTmp = saveToTmpFunction, run = runCommand) {
   const pdfBuffer = await downloadFromS3(s3Object.bucket.name, s3Object.object.key)
   const fileName = s3Object.object.key.split('/').pop()
   const pdfPath = await saveToTmp(fileName, pdfBuffer.Body)
