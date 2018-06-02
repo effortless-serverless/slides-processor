@@ -37,7 +37,7 @@ module.exports = async function countSlides(s3Object, downloadFromS3, sns, saveT
     return sns.publish({
       Message: JSON.stringify({
         page: currentPageNumber,
-        totalPageCount: pageCount,
+        totalPages: pageCount,
         bucket: s3Object.bucket.name,
         object: s3Object.object.key
       }),

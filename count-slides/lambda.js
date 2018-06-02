@@ -9,7 +9,7 @@ const countSlides = require('./main')
 exports.handler = async function lambdaHandler(event) {
   try {
     const s3Object = parseS3Event(event)
-    return countSlides(s3Object, downloadFromS3, sns)
+    return await countSlides(s3Object, downloadFromS3, sns)
   } catch(e) {
     return Promise.reject(e)
   }

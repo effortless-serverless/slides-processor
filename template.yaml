@@ -10,7 +10,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       CodeUri: count-slides/
-      Handler: index.handler
+      Handler: lambda.handler
       Runtime: nodejs8.10
       Environment:
         Variables:
@@ -34,7 +34,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       CodeUri: convert-to-image/
-      Handler: index.handler
+      Handler: lambda.handler
       Runtime: nodejs8.10
       Environment:
         Variables:
