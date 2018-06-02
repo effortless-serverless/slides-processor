@@ -1,0 +1,58 @@
+AWSTemplateFormatVersion: 2010-09-09
+Transform: AWS::Serverless-2016-10-31
+
+Resources:
+
+  PdfSlidesS3:
+    Type: AWS::S3::Bucket
+
+  CountSlides:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: count-slides/
+      Handler: index.handler
+      Runtime: nodejs8.10
+      Environment:
+        Variables:
+          TOPIC_ARN: !Ref SlideConvertTopic
+      Policies:
+        - SNSCrudPolicy:
+            TopicName: !GetAtt SlideConvertTopic.TopicName
+      Events:
+        PdfFileAddedEvent:
+          Type: S3
+          Properties:
+            Bucket: !Ref PdfSlidesS3
+            Events: s3:ObjectCreated:*
+            
+  SlideConvertTopic:
+    Type: AWS::SNS::Topic
+
+  ConvertSingleSlide:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: convert-to-image/
+      Handler: index.handler
+      Runtime: nodejs8.10
+      Environment:
+        Variables:
+          BUCKET_NAME: !Ref PngSlidesS3
+      Policies:
+        - S3CrudPolicy:
+            BucketName: !Ref ImageSlidesS3
+      Events:
+        SubscribedTopic:
+          Type: SNS
+          Properties:
+            Topic: !Ref SlideConvertTopic
+
+  ImageSlidesS3:
+    Type: AWS::S3::Bucket
+
+Outputs:
+  PdfSlideBucket:
+    Value: !Ref PdfSlidesS3
+    Description: The S3 Bucket where your PDF slides are stored
+  ImageSlidesBucket:
+    Value: !Ref ImageSlidesS3
+    Description: The S3 Bucket where your PNG slides are stored

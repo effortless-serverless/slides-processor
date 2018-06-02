@@ -1,0 +1,25 @@
+{
+  "name": "slides-processor",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "package": "aws cloudformation package --template-file template.yaml --output-template-file output.yaml --s3-bucket $npm_package_config_bucket_name",
+    "deploy": "aws cloudformation deploy --template-file output.yaml --stack-name slides-processor --capabilities CAPABILITY_IAM",
+    "qd": "npm run package && npm run deploy"
+  },
+  "config": {
+    "bucket_name": "slides-processor"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/effortless-serverless/slides-processor.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/effortless-serverless/slides-processor/issues"
+  },
+  "homepage": "https://github.com/effortless-serverless/slides-processor#readme"
+}
