@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "preinstall": "node scripts/install.js",
     "package": "aws cloudformation package --template-file template.yaml --output-template-file output.yaml --s3-bucket $npm_package_config_bucket_name",
     "deploy": "aws cloudformation deploy --template-file output.yaml --stack-name slides-processor --capabilities CAPABILITY_IAM",
     "qd": "npm run package && npm run deploy"
