@@ -8,7 +8,6 @@ module.exports = function saveToS3(bucket, object, fileContent, s3 = s3Lib) {
     Bucket: bucket,
     Key: object,
     ContentType: 'image/png',
-    Body: fileContent,
-    ACL: 'public-read'
+    Body: fileContent
   }).promise()
 }
