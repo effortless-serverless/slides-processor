@@ -1,10 +1,19 @@
 AWSTemplateFormatVersion: 2010-09-09
 Transform: AWS::Serverless-2016-10-31
 
+Parameters:
+
+  PdfBucketName: 
+    Type: String
+    Default: 'slides-pdf-bucket'
+
+
 Resources:
 
   PdfSlidesS3:
     Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Ref PdfBucketName
 
   CountSlides:
     Type: AWS::Serverless::Function
@@ -12,6 +21,8 @@ Resources:
       CodeUri: count-slides/
       Handler: lambda.handler
       Runtime: nodejs8.10
+      Timeout: 60
+      MemorySize: 512
       Environment:
         Variables:
           TOPIC_ARN: !Ref SlideConvertTopic
@@ -19,7 +30,7 @@ Resources:
         - SNSCrudPolicy:
             TopicName: !GetAtt SlideConvertTopic.TopicName
         - S3ReadPolicy:
-            BucketName: !Ref PdfSlidesS3
+            BucketName: !Ref PdfBucketName
       Events:
         PdfFileAddedEvent:
           Type: S3
@@ -36,14 +47,16 @@ Resources:
       CodeUri: convert-to-image/
       Handler: lambda.handler
       Runtime: nodejs8.10
+      Timeout: 60
+      MemorySize: 512
       Environment:
         Variables:
-          BUCKET_NAME: !Ref PngSlidesS3
+          BUCKET_NAME: !Ref ImageSlidesS3
       Policies:
         - S3CrudPolicy:
             BucketName: !Ref ImageSlidesS3
         - S3ReadPolicy:
-            BucketName: !Ref PdfSlidesS3
+            BucketName: !Ref PdfBucketName
       Events:
         SubscribedTopic:
           Type: SNS
