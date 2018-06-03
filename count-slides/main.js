@@ -1,6 +1,6 @@
 'use strict'
 
-const exec = require('child_process').exec
+const { exec } = require('child_process')
 const { writeFileSync } = require('fs')
 const { join } = require('path')
 
@@ -33,7 +33,7 @@ module.exports = async function countSlides(s3Object, downloadFromS3, sns, saveT
 
   // Create an array of N items, where N is the number of pages and loop through it
   return Promise.all(Array.apply(null, { length: pageCount }).map((item, index) => {
-    const currentPageNumber = Number.call(Number, ++index)
+    const currentPageNumber = Number.call(Number, index++)
     return sns.publish({
       Message: JSON.stringify({
         page: currentPageNumber,
