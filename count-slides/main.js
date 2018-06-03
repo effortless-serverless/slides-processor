@@ -6,7 +6,7 @@ const { join } = require('path')
 
 function saveToTmpFunction(fileName, pdfBuffer) {
   const localPath = join('/tmp', fileName)
-  writeFileSync(fileName, pdfBuffer)
+  writeFileSync(localPath, pdfBuffer)
   return localPath
 }
 
