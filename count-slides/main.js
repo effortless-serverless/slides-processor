@@ -12,7 +12,7 @@ function saveToTmpFunction(fileName, pdfBuffer) {
 
 function runCommand(command) {
   return new Promise((resolve, reject) => {
-    exec(command, { maxBuffer: 1024 * 1024 * 10 }, (err, stdout, stderr) => {
+    exec(command, { maxBuffer: 1024 * 1024 * 10 }, (err, stdout) => {
       if (err)
         return reject(err)
 
@@ -29,7 +29,7 @@ module.exports = async function countSlides(s3Object, downloadFromS3, sns, saveT
   const output = await run(`gs -dNODISPLAY -dBATCH -dNOPAUSE -o /dev/null ${pdfPath} | grep 'Page' | wc -l 2>/dev/null`)
   const pageCount = parseInt(output, 10)
 
-  console.log('Page count:', pageCount)
+  console.log('Page count:', pageCount) // eslint-disable-line 
 
   // Create an array of N items, where N is the number of pages and loop through it
   return Promise.all(Array.apply(null, { length: pageCount }).map((item, index) => {

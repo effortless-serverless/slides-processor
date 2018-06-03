@@ -1,7 +1,7 @@
 module.exports = (event) => {
 	if (!event || !event.Records || !Array.isArray(event.Records)) {
-		return [];
+		return []
     }
-    let extractMessage = record => record.Sns && record.Sns.Message;
-	return event.Records.map(extractMessage).filter(message => message);
-};
+    let extractMessage = record => record.Sns && record.Sns.Message
+	return event.Records.map(extractMessage).filter(message => message)
+}

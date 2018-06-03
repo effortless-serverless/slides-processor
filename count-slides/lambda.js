@@ -1,4 +1,4 @@
-'use strict';
+'use strict'
 
 const parseS3Event = require('./parse-s3-event')
 const downloadFromS3 = require('./download-from-s3')
