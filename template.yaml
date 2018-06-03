@@ -2,10 +2,10 @@ AWSTemplateFormatVersion: 2010-09-09
 Transform: AWS::Serverless-2016-10-31
 
 Parameters:
-
-  PdfBucketName: 
+  PdfSlidesBucketName:
     Type: String
-    Default: 'slides-pdf-bucket'
+    Default: 'pdf-slides'
+    Description: (Optional) The bucket name for your PDF slides (default is pdf-slides)
 
 
 Resources:
@@ -13,7 +13,7 @@ Resources:
   PdfSlidesS3:
     Type: AWS::S3::Bucket
     Properties:
-      BucketName: !Ref PdfBucketName
+      BucketName: !Ref PdfSlidesBucketName
 
   CountSlides:
     Type: AWS::Serverless::Function
@@ -30,7 +30,7 @@ Resources:
         - SNSCrudPolicy:
             TopicName: !GetAtt SlideConvertTopic.TopicName
         - S3ReadPolicy:
-            BucketName: !Ref PdfBucketName
+            BucketName: !Ref PdfSlidesBucketName
       Events:
         PdfFileAddedEvent:
           Type: S3
@@ -56,7 +56,7 @@ Resources:
         - S3CrudPolicy:
             BucketName: !Ref ImageSlidesS3
         - S3ReadPolicy:
-            BucketName: !Ref PdfBucketName
+            BucketName: !Ref PdfSlidesBucketName
       Events:
         SubscribedTopic:
           Type: SNS
