@@ -29,6 +29,6 @@ module.exports = async function convertToImage(message, downloadFromS3, saveToS3
   const localImagePath = `/tmp/page-${message.page}.png`
   const imageS3Path = `${basePath}/original/page-${message.page}.png`
 
-  await run(`convert ${pdfPath}[${message.page}] ${imageS3Path}`)
+  await run(`convert ${pdfPath}[${message.page}] ${localImagePath}`)
   return await saveToS3(process.env.BUCKET_NAME, imageS3Path, readFileSync(localImagePath))
 }
