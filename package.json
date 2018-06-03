@@ -13,7 +13,7 @@
     "test": "jest"
   },
   "config": {
-    "bucket_name": "slides-processor"
+    "bucket_name": "desole-deploy-helper-s"
   },
   "repository": {
     "type": "git",

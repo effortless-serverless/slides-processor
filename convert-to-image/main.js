@@ -1,7 +1,7 @@
 'use strict'
 
 const { exec } = require('child_process')
-const { basename, dirname, join } = require("path");
+const { basename, parse, join } = require('path')
 const { readFileSync, writeFileSync } = require('fs')
 
 function saveToTmpFunction(fileName, pdfBuffer) {
@@ -25,10 +25,9 @@ module.exports = async function convertToImage(message, downloadFromS3, saveToS3
   const pdfBuffer = await downloadFromS3(message.bucket, message.object)
   const fileName = basename(message.object)
   const pdfPath = await saveToTmp(fileName, pdfBuffer.Body)
-  const basePath = dirname(message.object)
   const localImagePath = `/tmp/page-${message.page}.png`
-  const imageS3Path = `${basePath}/original/page-${message.page}.png`
+  const imageS3Path = `${parse(message.object).name}/original/page-${message.page}.png`
 
-  await run(`convert ${pdfPath}[${message.page}] ${localImagePath}`)
+  await run(`convert -density 144 ${pdfPath}[${message.page}] ${localImagePath}`)
   return await saveToS3(process.env.BUCKET_NAME, imageS3Path, readFileSync(localImagePath))
 }
